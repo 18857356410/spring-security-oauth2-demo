@@ -1,0 +1,44 @@
+server:
+  port: 9098
+
+#cas:
+#  server-url-prefix: https://cas.example.org:8443/cas
+#  server-login-url: https://cas.example.org:8443/cas/login
+#  client-host-url:  http://localhost:8099
+#  validation-type: cas
+
+spring:
+  cas:
+    keySecurity: admin
+    server:
+      #cas服务端地址
+      serverUrlPrefix: https://cas.example.org:8443/cas
+      #cas服务端登录地址
+      serverLoginUrl: ${spring.cas.server.serverUrlPrefix}/login
+      #cas服务端登出地址 service参数后面跟就是需要跳转的页面/接口 这里指定的是cas客户端登录接口
+      serverLogoutUrl: ${spring.cas.server.serverUrlPrefix}/logout?service=${spring.cas.service.hostUrl}${spring.cas.service.loginUrl}
+    service:
+      #cas客户端地址
+      hostUrl: http://localhost:${server.port}
+      #cas客户端地址登录地址
+      loginUrl: /login
+      #cas客户端地址登出地址
+      logoutUrl: /logout
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
