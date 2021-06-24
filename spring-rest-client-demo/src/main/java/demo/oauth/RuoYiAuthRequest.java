@@ -1,13 +1,11 @@
 package demo.oauth;
 
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.xkcoding.http.support.HttpHeader;
 import demo.dto.AuthUserDto;
 import me.zhyd.oauth.cache.AuthStateCache;
 import me.zhyd.oauth.config.AuthConfig;
 import me.zhyd.oauth.config.AuthSource;
-import me.zhyd.oauth.enums.AuthUserGender;
 import me.zhyd.oauth.exception.AuthException;
 import me.zhyd.oauth.model.AuthCallback;
 import me.zhyd.oauth.model.AuthToken;
@@ -17,8 +15,10 @@ import me.zhyd.oauth.utils.Base64Utils;
 import me.zhyd.oauth.utils.HttpUtils;
 import me.zhyd.oauth.utils.UrlBuilder;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * <b><code>RuoYiAuthRequest</code></b>
@@ -63,11 +63,14 @@ public class RuoYiAuthRequest extends AuthDefaultRequest {
     JSONObject object = JSONObject.parseObject(body);
 
     this.checkResponse(object);
-
-    String[] authorities = (String[]) object.getJSONArray("authorities").toArray();
+    Object[] authorities = object.getJSONArray("authorities").toArray();
+    List<String> collect = new ArrayList<>();
+    if (authorities.length > 0) {
+      collect = Arrays.stream(authorities).map(Object::toString).collect(Collectors.toList());
+    }
 
     AuthUserDto authUserDto = new AuthUserDto();
-    authUserDto.setAuthorities(Arrays.asList(authorities));
+    authUserDto.setAuthorities(collect);
     authUserDto.setUsername(object.getString("user_name"));
     authUserDto.setClientId(object.getString("client_id"));
     return authUserDto;

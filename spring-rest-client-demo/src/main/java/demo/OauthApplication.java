@@ -22,6 +22,7 @@ public class OauthApplication {
     SpringApplication.run(OauthApplication.class, args);
     log.info("http://localhost:9003/oauth/login/github");
     log.info("http://localhost:9003/oauth/login/ruoyi");
+    log.info("http://localhost:9003/oauth/render/ruoyi");
   }
 
 }

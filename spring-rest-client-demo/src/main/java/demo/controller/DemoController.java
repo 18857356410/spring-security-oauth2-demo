@@ -2,7 +2,6 @@ package demo.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import demo.oauth.RuoYiAuthRequest;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.zhyd.oauth.config.AuthConfig;
 import me.zhyd.oauth.model.AuthCallback;
@@ -10,7 +9,7 @@ import me.zhyd.oauth.model.AuthResponse;
 import me.zhyd.oauth.model.AuthUser;
 import me.zhyd.oauth.request.AuthRequest;
 import me.zhyd.oauth.utils.AuthStateUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -30,7 +29,6 @@ import java.io.IOException;
 @Slf4j
 @RestController
 @RequestMapping("/oauth")
-@RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class DemoController {
 
 
@@ -66,11 +64,19 @@ public class DemoController {
     log.info("进入callback：" + source + " callback params：" + JSONObject.toJSONString(callback));
     AuthRequest authRequest = getAuthRequest();
     AuthResponse<AuthUser> response = authRequest.login(callback);
+
     log.info(JSONObject.toJSONString(response));
 
     return response;
   }
 
+
+  @GetMapping(value = "/info")
+  @PreAuthorize("hasAuthority('sys:index')")
+  public String getInfo() {
+
+    return "123";
+  }
 
   /**
    * 获取客户端请求信息
@@ -81,8 +87,11 @@ public class DemoController {
     return new RuoYiAuthRequest(AuthConfig.builder()
         .clientId("ceshiOAuth")
         .clientSecret("admin")
-        .redirectUri("http://localhost:8443/oauth/callback/ruoyi")
+        .redirectUri("http://localhost:9003/oauth/callback/ruoyi")
         .build());
   }
+
+
+
 
 }
