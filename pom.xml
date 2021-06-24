@@ -14,6 +14,7 @@
         <module>spring-resource-client-demo</module>
         <module>spring-sso-server-demo</module>
         <module>spring-sso-cas</module>
+        <module>spring-rest-client-demo</module>
     </modules>
 
 
@@ -71,6 +72,11 @@
                 <groupId>org.springframework.security</groupId>
                 <artifactId>spring-security-cas</artifactId>
                 <version>${spring-security-cas.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>5.5.8</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
