@@ -15,6 +15,7 @@
         <module>spring-sso-server-demo</module>
         <module>spring-sso-cas</module>
         <module>spring-rest-client-demo</module>
+        <module>spring-security-oauth-other-demo</module>
     </modules>
 
 

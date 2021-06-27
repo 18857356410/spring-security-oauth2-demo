@@ -71,9 +71,9 @@ public class DemoController {
   }
 
 
-  @GetMapping(value = "/info")
-  @PreAuthorize("hasAuthority('sys:index')")
-  public String getInfo() {
+  @GetMapping(value = "/string")
+  // @PreAuthorize("hasAuthority('*:*:*')")
+  public String getString() {
 
     return "123";
   }
