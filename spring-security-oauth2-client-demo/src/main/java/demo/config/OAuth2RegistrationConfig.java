@@ -15,7 +15,7 @@ import java.util.ArrayList;
  * @author wangzongyi
  */
 @Configuration
-public class OAuth2LoginConfig {
+public class OAuth2RegistrationConfig {
 
 
   @Bean
