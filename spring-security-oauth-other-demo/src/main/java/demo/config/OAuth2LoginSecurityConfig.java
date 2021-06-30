@@ -17,8 +17,10 @@ public class OAuth2LoginSecurityConfig extends WebSecurityConfigurerAdapter {
     http.authorizeRequests(authorizeRequests ->
         authorizeRequests
             .anyRequest().authenticated())
-        .oauth2Login( n ->
-            n.userInfoEndpoint());
+        .oauth2Login(Customizer.withDefaults())
+
+        .logout()
+        .logoutSuccessUrl("http://192.168.108.24:32038/logout");
 
   }
 }

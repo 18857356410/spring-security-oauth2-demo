@@ -16,7 +16,12 @@ public class OtherOAuthApplication {
     SpringApplication.run(OtherOAuthApplication.class, args);
     log.info("http://localhost:9004/");
     log.info("http://localhost:9004/demo/string");
-    log.info("http://auth-server:9095/oauth/authorize?client_id=client3&response_type=code");
+
+    log.info("前端点击自动访问: http://localhost:9004/oauth2/authorization/client3");
+    log.info("http://192.168.108.24:32038/oauth/authorize?client_id=client3&response_type=code");
+
+
+
   }
 
 }

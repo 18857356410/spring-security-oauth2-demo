@@ -10,17 +10,26 @@ import org.springframework.web.bind.annotation.RestController;
  * @author wangzongyi
  */
 @RestController
-@RequestMapping("/demo")
-public class DemoController {
+@RequestMapping
+public class RestDemoController {
 
 
-  @GetMapping(value = "/string")
+  @GetMapping(value = "/")
   @PreAuthorize("hasAuthority('system:string')")
   public ServiceData<String> getString() {
 
 
     return ServiceData.success("123");
   }
+
+
+
+
+
+
+
+
+
 
 
 }

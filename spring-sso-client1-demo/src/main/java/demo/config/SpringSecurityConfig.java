@@ -22,7 +22,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .logout()
                 //当应用退出后交给远端处理,请求认证服务器将应用退出
-                .logoutSuccessUrl("http://auth-server:8080/logout")
+                .logoutSuccessUrl("http://auth-server:9095/logout")
                 .and()
                 //暂时屏蔽csrf过滤
                 .csrf().disable();

@@ -22,27 +22,11 @@ public class OAuth2LoginConfig {
   public ClientRegistrationRepository clientRegistrationRepository() {
 
     ArrayList<ClientRegistration> clientRegistrationArrayList = new ArrayList<>();
-    clientRegistrationArrayList.add(this.githubClientRegistration());
     clientRegistrationArrayList.add(this.canYanClientRegistration());
 
     return new InMemoryClientRegistrationRepository(clientRegistrationArrayList);
   }
 
-  private ClientRegistration githubClientRegistration() {
-    return ClientRegistration.withRegistrationId("github")
-        .clientId("d5e863e1a4ea47e2216f")
-        .clientSecret("18da614dde5e90425708403f0172220028eb63f4")
-        .clientAuthenticationMethod(ClientAuthenticationMethod.POST)
-        .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-        .redirectUriTemplate("{baseUrl}/login/oauth2/code/{registrationId}")
-        .scope("all")
-        .authorizationUri("https://github.com/login/oauth/authorize")
-        .tokenUri("https://github.com/login/oauth/access_token")
-        .userInfoUri("https://api.github.com/user")
-        .userNameAttributeName("login")
-        .clientName("GitHub 登录")
-        .build();
-  }
 
   private ClientRegistration canYanClientRegistration() {
     return ClientRegistration.withRegistrationId("client3")
@@ -51,11 +35,12 @@ public class OAuth2LoginConfig {
         .clientAuthenticationMethod(ClientAuthenticationMethod.POST)
         .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
         .redirectUriTemplate("{baseUrl}/login/oauth2/code/{registrationId}")
+        // .redirectUriTemplate("{baseUrl}/login/demo/string/{registrationId}")
         // .scope("all")
-        .authorizationUri("http://auth-server:9095/oauth/authorize")
-        .tokenUri("http://auth-server:9095/oauth/token")
-        .userInfoUri("http://auth-server:9095/oauth2/user")
-        // .userInfoUri("http://auth-server:9095/getInfo")
+        .authorizationUri("http://192.168.108.24:32038/oauth/authorize")
+        .tokenUri("http://192.168.108.24:32038/oauth/token")
+        .userInfoUri("http://192.168.108.24:32038/oauth2/user")
+        // .userInfoUri("http://192.168.108.24:32038/getInfo")
         .userNameAttributeName("userName")
         .clientName("广东省移动产研通用安全组件登录")
         .build();
