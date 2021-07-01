@@ -14,13 +14,9 @@ public class OtherOAuthApplication {
 
   public static void main(String[] args) {
     SpringApplication.run(OtherOAuthApplication.class, args);
-    log.info("http://localhost:9004/");
-    log.info("http://localhost:9004/user");
-
-    log.info("前端点击自动访问: http://localhost:9004/oauth2/authorization/client3");
-    log.info("http://192.168.108.24:32038/oauth/authorize?client_id=client3&response_type=code");
-
-
+    log.info("<a>标签登录:http://localhost:9004/oauth2/authorization/client3");
+    log.info("无需登录获取wangwu的信息: http://localhost:9004/wangwu");
+    log.info("需要system:list权限获取zhangsan信息: http://localhost:9004/zhangsan");
 
   }
 

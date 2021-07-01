@@ -1,16 +1,16 @@
 server:
   port: 9004
 
-#logging:
-#  level:
-#    root: info
-#    org.springframework.web: INFO
-#    org.springframework.security: INFO
+logging:
+  level:
+    root: info
+    org.springframework.web: debug
+    org.springframework.security: debug
 
 
-#spring:
-#  thymeleaf:
-#    cache: false
+customLogin:
+  #  successUrl: http://192.168.108.24:32138/index
+  successUrl: http://localhost:9004/user
 
 
 
