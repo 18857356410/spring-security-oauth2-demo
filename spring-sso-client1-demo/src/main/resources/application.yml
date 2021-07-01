@@ -7,13 +7,14 @@ security:
     client:
       client-id: client1 # 当前客户端id
       client-secret: admin # 客户端的密码
-      user-authorization-uri: http://auth-server:9095/oauth/authorize #请求认证的地址，获取授权码地址
-      access-token-uri: http://auth-server:9095/oauth/token # 请求令牌的地址
+      user-authorization-uri: http://192.168.108.24:32038/oauth/authorize #请求认证的地址，获取授权码地址
+      access-token-uri: http://192.168.108.24:32038/oauth/token # 请求令牌的地址
+    logout-uri: http://192.168.108.24:32038/logout
     resource:
       jwt:
         # 当用户授权之后会响应一个授权码，重定向到当前应用的 http://localhost:9001/login?code=xxx
         # 自动的会对 /login 去获取令牌，获取到令牌后会通过 key-uri 获取到的公钥进行解密然后本地身份认证和授权（Session）
-        key-uri: http://auth-server:9095/oauth/token_key # 获取公钥
+        key-uri: http://192.168.108.24:32038/oauth/token_key # 获取公钥
 
 
 spring:

@@ -11,8 +11,6 @@
 
     <artifactId>spring-sso-client1-demo</artifactId>
 
-
-
     <dependencies>
         <!--MVC  支持-->
         <dependency>

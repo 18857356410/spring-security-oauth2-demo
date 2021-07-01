@@ -12,7 +12,7 @@ import java.io.IOException;
 /**
  * <b><code>CustomizedForwardAuthenticationFailureHandler</code></b>
  * <p/>
- * Description
+ * 自定义认证失败处理器
  * <p/>
  * <b>Creation Time:</b> 2021/7/1 15:13.
  *

@@ -35,7 +35,6 @@ public class OAuth2RegistrationConfig {
         .clientAuthenticationMethod(ClientAuthenticationMethod.POST)
         .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
         .redirectUriTemplate("{baseUrl}/login/oauth2/code/{registrationId}")
-        // .redirectUriTemplate("{baseUrl}/login/demo/string/{registrationId}")
         // .scope("all")
         .authorizationUri("http://192.168.108.24:32038/oauth/authorize")
         .tokenUri("http://192.168.108.24:32038/oauth/token")
