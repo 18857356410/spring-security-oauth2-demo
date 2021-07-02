@@ -3,7 +3,6 @@ package demo.security.handler;
 import com.alibaba.fastjson.JSON;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.oauth2.provider.error.AbstractOAuth2SecurityExceptionHandler;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.stereotype.Component;

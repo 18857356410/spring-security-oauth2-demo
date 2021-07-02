@@ -9,8 +9,8 @@ logging:
 
 
 customLogin:
-  #  successUrl: http://192.168.108.24:32138/index
-  successUrl: http://localhost:9004/user
+  successUrl: http://192.168.108.24:32138/index
+#  successUrl: http://localhost:9004/user
 
 
 

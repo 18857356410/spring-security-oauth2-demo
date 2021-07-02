@@ -17,13 +17,10 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
-import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest;
-import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserService;
-import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
-import org.springframework.security.oauth2.core.OAuth2AccessToken;
-import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
-import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.security.oauth2.core.user.OAuth2UserAuthority;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
 import java.util.HashSet;
 import java.util.List;
@@ -34,7 +31,6 @@ import java.util.stream.Collectors;
 /**
  * @author wangzongyi
  */
-
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class OAuth2SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -59,11 +55,31 @@ public class OAuth2SecurityConfig extends WebSecurityConfigurerAdapter {
     return new CustomizedAuthenticationFailureHandler();
   }
 
+  /**
+   * 跨域配置
+   */
+  @Bean
+  public CorsFilter corsFilter() {
+    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    CorsConfiguration config = new CorsConfiguration();
+    config.setAllowCredentials(true);
+    // 设置访问源地址
+    config.addAllowedOrigin("*");
+    // 设置访问源请求头
+    config.addAllowedHeader("*");
+    // 设置访问源请求方法
+    config.addAllowedMethod("*");
+    source.registerCorsConfiguration("/**", config);
+
+    return new CorsFilter(source);
+  }
+
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
 
     http.csrf().disable();
+    http.cors();
 
     http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED);
 

@@ -1,7 +1,6 @@
 package demo.security.handler;
 
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.web.authentication.ForwardAuthenticationFailureHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 
 import javax.servlet.ServletException;
