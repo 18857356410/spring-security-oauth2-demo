@@ -1,9 +1,12 @@
 package demo.controller;
 
 import cn.hutool.core.util.IdUtil;
-import cn.hutool.json.JSONObject;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import demo.dto.Auth2User;
 import demo.dto.LoginOAuth2User;
 import demo.security.TokenService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -19,9 +22,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Collection;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -30,39 +35,52 @@ import java.util.stream.Collectors;
  */
 @RestController
 @RequestMapping
+@Slf4j
 public class RestDemoController {
 
 
   @Autowired
   private TokenService tokenService;
 
-  @GetMapping("/user")
+  /**
+   * OAuth2 登录后获取Token
+   *
+   * @param authorizedClient
+   * @param oauth2User
+   * @return
+   */
+  @GetMapping("/token")
   public ResponseEntity getUser(@RegisteredOAuth2AuthorizedClient("client3") OAuth2AuthorizedClient authorizedClient,
                                 @AuthenticationPrincipal OAuth2User oauth2User) {
-
-    HashMap<String, Object> stringStringHashMap = new HashMap<>();
-    stringStringHashMap.put("userName", oauth2User.getName());
-    stringStringHashMap.put("clientName", authorizedClient.getClientRegistration().getClientName());
-    stringStringHashMap.put("userAttributes", oauth2User.getAttributes());
-    stringStringHashMap.put("accessToken", authorizedClient.getAccessToken());
-    stringStringHashMap.put("refreshToken", authorizedClient.getRefreshToken());
-    stringStringHashMap.put("redirectUri", authorizedClient.getClientRegistration().getRedirectUriTemplate());
-
-    LoginOAuth2User loginOAuth2User = new LoginOAuth2User();
-    loginOAuth2User.setAttributes(oauth2User.getAttributes());
-
-    JSONObject jsonObject = new JSONObject(oauth2User.getAttributes());
-
-
-    OAuth2UserAuthority oAuth2UserAuthority = (OAuth2UserAuthority) oauth2User.getAuthorities();
+    Set<GrantedAuthority> authorities = new HashSet<>();
+    oauth2User.getAuthorities().forEach(n -> {
+          if (n instanceof OAuth2UserAuthority) {
+            Map<String, Object> attributes = ((OAuth2UserAuthority) n).getAttributes();
+            Auth2User auth2User = JSON.parseObject(new JSONObject(attributes).toJSONString(), Auth2User.class);
+            Set<SimpleGrantedAuthority> collect = auth2User.getAuthorities().stream().distinct().map(SimpleGrantedAuthority::new).collect(Collectors.toSet());
+            authorities.addAll(collect);
+          } else if (n instanceof SimpleGrantedAuthority) {
+            authorities.add(n);
+          } else {
+            log.info("OAuth2 登录的用户没有简单授权类型的角色可以新增");
+          }
+        }
+    );
 
 
-    loginOAuth2User.setNameAttributeKey(oauth2User.getName());
-    loginOAuth2User.setExpireTime(System.currentTimeMillis() + (30 * 60 * 60));
-    loginOAuth2User.setLoginTime(System.currentTimeMillis());
-    loginOAuth2User.setUuidString(IdUtil.fastUUID());
-    loginOAuth2User.setOauth2Authority(oAuth2UserAuthority.getAuthority());
-    loginOAuth2User.setOAuth2Attributes(oAuth2UserAuthority.getAttributes());
+    Instant expiresAt = authorizedClient.getAccessToken().getExpiresAt();
+    long expireTime = ChronoUnit.SECONDS.between(Instant.now(), expiresAt);
+
+    LoginOAuth2User loginOAuth2User = LoginOAuth2User.builder()
+        .attributes(oauth2User.getAttributes())
+        .authorities(authorities)
+        .authorizedClientRegistrationId(authorizedClient.getClientRegistration().getRegistrationId())
+        .expireTime(expireTime)
+        .loginTime(Instant.now())
+        .nameAttributeKey("userName")
+        .uuidString(IdUtil.fastUUID())
+        .build();
+
 
     String token = tokenService.createToken(loginOAuth2User);
 

@@ -4,7 +4,7 @@ import lombok.Data;
 import lombok.ToString;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Set;
 
 /**
  * @author wangzongyi
@@ -25,9 +25,21 @@ public class Auth2User implements Serializable {
 
 
   /**
+   * 手机号码
+   */
+  private String phoneNumber;
+
+
+  /**
    * 客户端Id
    */
   private String clientId;
+
+
+  /**
+   * 授权范围
+   */
+  private Set<String> scope;
 
   /**
    * 是否有效
@@ -42,12 +54,7 @@ public class Auth2User implements Serializable {
   /**
    * 权限范围
    */
-  private List<String> authorities;
-
-  /**
-   * 范围
-   */
-  private List<String> scope;
+  private Set<String> authorities;
 
 
 }

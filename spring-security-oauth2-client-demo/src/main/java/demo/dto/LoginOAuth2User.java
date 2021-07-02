@@ -1,11 +1,14 @@
 package demo.dto;
 
+import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 
 import java.io.Serializable;
-import java.util.List;
+import java.time.Instant;
+import java.util.Collection;
 import java.util.Map;
 
 /**
@@ -20,25 +23,44 @@ import java.util.Map;
  */
 @Data
 @ToString
+@Builder
 public class LoginOAuth2User implements Serializable {
 
   private static final long serialVersionUID = 2432647029825257482L;
 
 
-  private List<SimpleGrantedAuthority> authorities;
+  public LoginOAuth2User() {
+  }
+
+  public LoginOAuth2User(DefaultOAuth2User defaultOAuth2User, Collection<? extends GrantedAuthority> authorities, String authorizedClientRegistrationId, Map<String, Object> attributes, String nameAttributeKey, Long expireTime, Instant loginTime, String uuidString) {
+    this.defaultOAuth2User = defaultOAuth2User;
+    this.authorities = authorities;
+    this.authorizedClientRegistrationId = authorizedClientRegistrationId;
+    this.attributes = attributes;
+    this.nameAttributeKey = nameAttributeKey;
+    this.expireTime = expireTime;
+    this.loginTime = loginTime;
+    this.uuidString = uuidString;
+  }
 
   /**
-   * 权限名称
+   * 默认的OAuth2 登录的用户信息
    */
-  private String oauth2Authority;
+  private DefaultOAuth2User defaultOAuth2User;
+
 
   /**
-   * 权限属性
+   * OAuth2 的用户授权信息
    */
-  private Map<String, Object> OAuth2Attributes;
+  private Collection<? extends GrantedAuthority> authorities;
 
 
-  private Map<String, Map<String, Object>> oauth2AttributesList;
+  /**
+   * 授权注册的客户端ID
+   */
+  private String authorizedClientRegistrationId;
+
+
   /**
    * 其他属性
    */
@@ -60,7 +82,7 @@ public class LoginOAuth2User implements Serializable {
   /**
    * 登录时间
    */
-  private Long loginTime;
+  private Instant loginTime;
 
 
   /**

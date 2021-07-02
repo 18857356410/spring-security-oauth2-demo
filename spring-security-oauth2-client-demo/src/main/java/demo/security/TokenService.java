@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
@@ -80,12 +81,12 @@ public class TokenService {
    * @return
    */
   public void refreshToken(LoginOAuth2User loginOAuth2User) {
-    loginOAuth2User.setLoginTime(System.currentTimeMillis());
+    loginOAuth2User.setLoginTime(Instant.now());
     loginOAuth2User.setExpireTime(System.currentTimeMillis() + (expireTime * 60 * 1000));
 
     redisCache.setCacheObject(loginOAuth2User.getUuidString(),
         loginOAuth2User,
-        expireTime,
+        loginOAuth2User.getExpireTime().intValue(),
         TimeUnit.MINUTES);
   }
 

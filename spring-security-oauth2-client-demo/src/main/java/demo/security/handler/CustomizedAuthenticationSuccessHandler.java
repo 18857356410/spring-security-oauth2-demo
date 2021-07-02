@@ -1,7 +1,6 @@
 package demo.security.handler;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
@@ -35,7 +34,7 @@ public class CustomizedAuthenticationSuccessHandler extends SavedRequestAwareAut
     SavedRequest savedRequest = requestCache.getRequest(request, response);
 
     if (savedRequest == null) {
-      request.getRequestDispatcher("/user").forward(request, response);
+      request.getRequestDispatcher("/token").forward(request, response);
       return;
     }
 

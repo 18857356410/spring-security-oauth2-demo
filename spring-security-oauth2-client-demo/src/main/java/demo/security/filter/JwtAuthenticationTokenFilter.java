@@ -6,8 +6,6 @@ import demo.security.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
-import org.springframework.security.oauth2.client.authentication.OAuth2LoginAuthenticationToken;
-import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -53,14 +51,22 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
       // 缓存相应Token 完成根据Token 登录
       // OAuth2LoginAuthenticationToken oAuth2LoginAuthenticationToken =
       //     new OAuth2LoginAuthenticationToken(clientRegistration,
-      //     authorizationExchange,
-      //     principal,
-      //     accessToken,
-      //     refreshToken);
-      // OAuth2LoginAuthenticationToken oAuth2LoginAuthenticationToken = new OAuth2LoginAuthenticationToken(null)
-      // oAuth2LoginAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-      // SecurityContextHolder.getContext().setAuthentication(oAuth2LoginAuthenticationToken);
+      //         authorizationExchange,
+      //         principal,
+      //         accessToken,
+      //         refreshToken);
 
+      DefaultOAuth2User oAuth2User = new DefaultOAuth2User(loginOAuth2User.getAuthorities(),
+          loginOAuth2User.getAttributes(),
+          "userName");
+
+      OAuth2AuthenticationToken oAuth2LoginAuthenticationToken = new OAuth2AuthenticationToken(oAuth2User,
+          loginOAuth2User.getAuthorities(),
+          "client3");
+
+      oAuth2LoginAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
+      SecurityContextHolder.getContext().setAuthentication(oAuth2LoginAuthenticationToken);
     }
 
     filterChain.doFilter(request, response);

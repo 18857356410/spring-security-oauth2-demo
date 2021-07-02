@@ -7,7 +7,6 @@ import demo.security.filter.JwtAuthenticationTokenFilter;
 import demo.security.handler.CustomizedAccessDeniedHandler;
 import demo.security.handler.CustomizedAuthenticationFailureHandler;
 import demo.security.handler.CustomizedAuthenticationSuccessHandler;
-import jdk.nashorn.internal.ir.ReturnNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -20,16 +19,14 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
 import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
-import org.springframework.security.oauth2.core.oidc.OidcIdToken;
-import org.springframework.security.oauth2.core.oidc.OidcUserInfo;
-import org.springframework.security.oauth2.core.oidc.user.OidcUserAuthority;
 import org.springframework.security.oauth2.core.user.OAuth2UserAuthority;
-import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationProcessingFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -102,7 +99,7 @@ public class OAuth2SecurityConfig extends WebSecurityConfigurerAdapter {
     //  获取用户信息端点配置
     http.oauth2Login().userInfoEndpoint()
         //  获取通用安全组件的授权信息
-        .userAuthoritiesMapper(this.userAuthoritiesMapper2());
+        .userAuthoritiesMapper(this.userAuthoritiesMapper());
 
     // 自定义成功处理器和失败处理器
     http.oauth2Login()
@@ -123,59 +120,19 @@ public class OAuth2SecurityConfig extends WebSecurityConfigurerAdapter {
    * @return
    */
   private GrantedAuthoritiesMapper userAuthoritiesMapper() {
-
-    GrantedAuthoritiesMapper grantedAuthoritiesMapper = (authorities) -> {
-
-      Set<SimpleGrantedAuthority> mappedAuthorities = new HashSet<>();
-
-      authorities.forEach(authority -> {
-        if (OAuth2UserAuthority.class.isInstance(authority)) {
-          OAuth2UserAuthority oauth2UserAuthority = (OAuth2UserAuthority) authority;
-
-          // 获取OAuth2 认证用户的授权信息
-          Map<String, Object> userAttributes = oauth2UserAuthority.getAttributes();
-
-          // 如果用户信息包含相应的授权信息则添加到现有授权中
-          if (userAttributes != null && userAttributes.get("authorities") != null) {
-
-            String jsonObject = new JSONObject(userAttributes).toString();
-            Auth2User auth2User = JSON.parseObject(jsonObject, Auth2User.class);
-
-            List<SimpleGrantedAuthority> collect = auth2User.getAuthorities().stream().distinct()
-                .map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toList());
-
-            mappedAuthorities.addAll(collect);
-          }
-        }
-      });
-
-      return mappedAuthorities;
-    };
-
-    return grantedAuthoritiesMapper;
-  }
-
-  private GrantedAuthoritiesMapper userAuthoritiesMapper2() {
     return (authorities) -> {
-
       Set<GrantedAuthority> mappedAuthorities = new HashSet<>();
+
       authorities.forEach(authority -> {
         if (OAuth2UserAuthority.class.isInstance(authority)) {
           OAuth2UserAuthority oauth2UserAuthority = (OAuth2UserAuthority) authority;
 
           Map<String, Object> userAttributes = oauth2UserAuthority.getAttributes();
 
-          // Map the attributes found in userAttributes
-          // to one or more GrantedAuthority's and add it to mappedAuthorities
           if (userAttributes != null && userAttributes.get("authorities") != null) {
-
             String jsonObject = new JSONObject(userAttributes).toString();
             Auth2User auth2User = JSON.parseObject(jsonObject, Auth2User.class);
-
-            List<SimpleGrantedAuthority> collect = auth2User.getAuthorities().stream().distinct()
-                .map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toList());
+            Set<SimpleGrantedAuthority> collect = auth2User.getAuthorities().stream().map(SimpleGrantedAuthority::new).collect(Collectors.toSet());
 
             mappedAuthorities.addAll(collect);
           }
