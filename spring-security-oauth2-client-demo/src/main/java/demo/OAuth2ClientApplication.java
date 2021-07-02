@@ -10,10 +10,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  */
 @SpringBootApplication
 @Slf4j
-public class OtherOAuthApplication {
+public class OAuth2ClientApplication {
 
   public static void main(String[] args) {
-    SpringApplication.run(OtherOAuthApplication.class, args);
+    SpringApplication.run(OAuth2ClientApplication.class, args);
     log.info("使用a标签登录:http://localhost:9004/oauth2/authorization/client3");
     log.info("无需登录获取wangwu的信息: http://localhost:9004/wangwu");
     log.info("无需登录获取wangwu的信息: http://localhost:9004/user");

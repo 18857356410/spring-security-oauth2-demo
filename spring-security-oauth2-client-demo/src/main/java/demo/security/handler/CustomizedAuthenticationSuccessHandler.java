@@ -26,24 +26,16 @@ import java.io.IOException;
 @Slf4j
 public class CustomizedAuthenticationSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
 
-  @Value("${customLogin.successUrl}")
-  private String successUrl;
-
   private RequestCache requestCache = new HttpSessionRequestCache();
 
   @Override
   public void onAuthenticationSuccess(HttpServletRequest request,
                                       HttpServletResponse response,
                                       Authentication authentication) throws IOException, ServletException {
-
-
-
     SavedRequest savedRequest = requestCache.getRequest(request, response);
 
     if (savedRequest == null) {
-
-      // request.getRequestDispatcher("/user").forward(request, response);
-      getRedirectStrategy().sendRedirect(request, response, successUrl);
+      request.getRequestDispatcher("/user").forward(request, response);
       return;
     }
 
