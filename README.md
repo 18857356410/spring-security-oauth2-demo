@@ -39,11 +39,11 @@ SpringSecurityOAuth2Demo 主要是提供如何通过使用SpringSecurity相关�
 
 ```zh
 1. spring-security-oauth2-demo
-    1. spring-security-oauth2-client-demo  使用OAuth2-client 接入通用安全组件认证服务器
-    2. spring-resource-client-demo  作为资源服务器接入通用安全组件认证服务器
-    3. spring-sso-cas  springsecurity 接入CAS
-    4. spring-sso-client1-demo   SSO 接入client1
-    5. spring-sso-client2-demo   SSO 接入client2
-    6. spring-sso-server-demo    认证服务端
+    1. spring-security-oauth2-client-demo  使用 OAuth2-client 接入 通用安全组件认证
+    2. spring-resource-client-demo  使用 ResourceServer 接入 通用安全组件认证
+    3. spring-sso-cas  springsecurity 接入CAS样例
+    4. spring-sso-client1-demo   client1 接入 通用安全组件 SSO 样例
+    5. spring-sso-client2-demo   client2 接入 通用安全组件 SSO 样例
+    6. spring-sso-server-demo    简单的认证服务端样例
 ```
 

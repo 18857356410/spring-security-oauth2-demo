@@ -17,6 +17,8 @@ security:
         key-uri: http://192.168.108.24:32038/oauth/token_key # 获取公钥
 
 
+
+
 spring:
   thymeleaf:
     cache: false
