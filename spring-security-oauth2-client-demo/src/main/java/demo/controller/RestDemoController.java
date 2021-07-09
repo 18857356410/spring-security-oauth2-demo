@@ -69,7 +69,7 @@ public class RestDemoController {
 
 
     Instant expiresAt = authorizedClient.getAccessToken().getExpiresAt();
-    long expireTime = ChronoUnit.SECONDS.between(Instant.now(), expiresAt);
+    long expireTime = ChronoUnit.SECONDS.between(Instant.now(), expiresAt) * 60;
 
     LoginOAuth2User loginOAuth2User = LoginOAuth2User.builder()
         .attributes(oauth2User.getAttributes())

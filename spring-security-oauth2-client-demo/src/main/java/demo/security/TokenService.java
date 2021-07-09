@@ -82,7 +82,9 @@ public class TokenService {
    */
   public void refreshToken(LoginOAuth2User loginOAuth2User) {
     loginOAuth2User.setLoginTime(Instant.now());
-    loginOAuth2User.setExpireTime(System.currentTimeMillis() + (expireTime * 60 * 1000));
+
+    //自定义失效时间
+    loginOAuth2User.setExpireTime((long) expireTime);
 
     redisCache.setCacheObject(loginOAuth2User.getUuidString(),
         loginOAuth2User,
